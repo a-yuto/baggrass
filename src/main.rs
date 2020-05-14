@@ -5,6 +5,7 @@ extern crate rand;
 use rand::Rng;
 type Table = HashSet<Member>;
 
+
 #[derive(Hash,PartialEq,Eq,Debug,Clone)]
 struct Member{
     id: usize,
@@ -32,9 +33,9 @@ impl Member{
         _table
     }
 
-    fn group_by(table :&Table, column_name: &str) -> HashSet<HashSet<Member>> {
+    fn group_by(table :&Table, column_name: &str) -> Vec<HashSet<Member>> {
         let mut _values: HashSet<String> = HashSet::new();
-        let mut _ans  = HashSet::new();
+        let mut _ans  = Vec::new();
         for record in table {
             _values.insert((&record.department).to_string());
         }
@@ -45,7 +46,7 @@ impl Member{
                     tmp_table.insert(Member::make_mamber(record.id,&record.department,record.salary));
                 }
             }
-            _ans.insert(tmp_table);
+            _ans.push(tmp_table);
         }
         _ans
     }
@@ -75,24 +76,17 @@ impl Member{
     } 
 }
 fn main() {
-    Member::group_by(&Member::make_sample(10),"department");
+    for table in Member::group_by(&Member::make_sample(10),"department") {
+        Member::print_table(&table);
+    }
 }
-
 
 #[test]
-fn group_by_test() {
-    let mut ec       = HashSet::new();
-    let mut engineer = HashSet::new();
-    let mut jinji    = HashSet::new();
-    ec.insert(Member::make_mamber(1,"EC",300));
-    ec.insert(Member::make_mamber(2,"EC",500));
-    engineer.insert(Member::make_mamber(3,"engineer",400));
-    jinji.insert(Member::make_mamber(4,"jinji",500));
-    let     ans  = vec![ec,engineer,jinji].into_iter().collect::<HashSet<Member>>();
-    let mut test = HashSet::new();
-    test.insert(Member::make_mamber(1,"EC",300));
-    test.insert(Member::make_mamber(2,"EC",500));
-    test.insert(Member::make_mamber(3,"engineer",400));
-    test.insert(Member::make_mamber(4,"jinji",500));
-    assert_eq!(ans,Member::group_by(&test,"department"))
+fn test_group_by(){
+    //Test it visually. I'm sorry.
+    for table in Member::group_by(&Member::make_sample(10),"department") {
+        Member::print_table(&table);
+    }
 }
+
+
