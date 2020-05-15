@@ -15,7 +15,9 @@ struct Member{
 fn make_mamber(id: usize, department: &str, salary: i32) -> Member {
     Member{id: id,department: department.to_string(),salary: salary}
 }
-fn make_member_data(n: usize) -> Table {
+
+
+fn make_sample(n: usize) -> Table {
     let mut _table = HashSet::new();
     for i in 0..n {
         let salary = rand::thread_rng().gen_range(300, 1000);
@@ -30,8 +32,12 @@ fn make_member_data(n: usize) -> Table {
     _table
 }
 
-fn group_by(table :&Table,column_name: &str) -> Vec<table> {
-    
+fn group_by(table :&Table,column_name: &str) -> Vec<HashSet<Member>> {
+    /*let _set = HashSet::new();
+    for _column in table {
+        _set.insert(table.column_name);
+    }*/
+    Vec::new()
 }
 
 fn print_table(table: &Table) {
@@ -58,6 +64,23 @@ fn print_table(table: &Table) {
 } 
 
 fn main() {
-    let _data = make_member_data(100);
-    print_table(&_data);
+}
+
+
+#[test]
+fn group_by_test() {
+    let mut ec       = HashSet::new();
+    let mut engineer = HashSet::new();
+    let mut jinji    = HashSet::new();
+    ec.insert(make_mamber(1,"EC",300));
+    ec.insert(make_mamber(2,"EC",500));
+    engineer.insert(make_mamber(3,"engineer",400));
+    jinji.insert(make_mamber(4,"jinji",500));
+    let     ans  = vec![ec,engineer,jinji];
+    let mut test = HashSet::new();
+    test.insert(make_mamber(1,"EC",300));
+    test.insert(make_mamber(2,"EC",500));
+    test.insert(make_mamber(3,"engineer",400));
+    test.insert(make_mamber(4,"jinji",500));
+    assert_eq!(ans,group_by(&test,"department"))
 }
